@@ -1,6 +1,6 @@
 ﻿using BepInEx.Logging;
 
-namespace Hex3Mod.Logging
+namespace Hex3Reworks.Logging
 {
     internal static class Log
     {
