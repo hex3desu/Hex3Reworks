@@ -40,23 +40,32 @@ namespace Hex3Reworks
 
         private static void PrintLog(int arrayPointer, bool enabled) // Prints log infos for enabled/disabled reworks to make our lines shorter
         {
-            string[] names = new string[1]
+            string[] names = new string[2]
             { 
-                "Mercurial Rachis"
+                "Mercurial Rachis",
+                "Lepton Daisy"
             };
 
             if (enabled == true){ Log.LogInfo("Modifying " + names[arrayPointer] + "..."); }
             else { Log.LogInfo(names[arrayPointer] + " changes disabled."); }
         }
 
+        // Uncommon
+        public ConfigEntry<bool> LeptonDaisy_Enable() { return Config.Bind<bool>(new ConfigDefinition("Lunar - Lepton Daisy", "Enable Changes"), true, new ConfigDescription("Enables changes to Lepton Daisy.", null, Array.Empty<object>())); }
+        public ConfigEntry<float> LeptonDaisy_WeakDuration() { return Config.Bind<float>(new ConfigDefinition("Lunar - Lepton Daisy", "Weaken Duration"), 10f, new ConfigDescription("How long enemies should be weakened by each healing nova, in seconds.", null, Array.Empty<object>())); }
+
+        // Lunar
         public ConfigEntry<bool> MercurialRachis_Enable(){ return Config.Bind<bool>(new ConfigDefinition("Lunar - Mercurial Rachis", "Enable Changes"), true, new ConfigDescription("Enables changes to Mercurial Rachis.", null, Array.Empty<object>())); }
         public ConfigEntry<bool> MercurialRachis_IsTonic() { return Config.Bind<bool>(new ConfigDefinition("Lunar - Mercurial Rachis", "Apply Spinel Tonic Buff"), true, new ConfigDescription("Apply a Spinel Tonic buff instead of the vanilla Power Ward buff.", null, Array.Empty<object>())); }
         public ConfigEntry<float> MercurialRachis_Radius(){ return Config.Bind<float>(new ConfigDefinition("Lunar - Mercurial Rachis", "Radius"), 16f, new ConfigDescription("Radius of Mercurial Rachis zone in meters.", null, Array.Empty<object>())); }
-        public ConfigEntry<float> MercurialRachis_PlacementRadius() { return Config.Bind<float>(new ConfigDefinition("Lunar - Mercurial Rachis", "Placement Radius"), 5f, new ConfigDescription("The maximum range from the player at which Mercurial Rachis places its wards.", null, Array.Empty<object>())); }
+        public ConfigEntry<float> MercurialRachis_PlacementRadius() { return Config.Bind<float>(new ConfigDefinition("Lunar - Mercurial Rachis", "Placement Radius"), 5f, new ConfigDescription("The maximum range from the player at which Mercurial Rachis places its wards, in meters.", null, Array.Empty<object>())); }
 
         public void Awake()
         {
             Log.Init(Logger);
+
+            // Uncommon
+            if (LeptonDaisy_Enable().Value == true) { PrintLog(1, true); Reworks.LeptonDaisy.Initiate(LeptonDaisy_WeakDuration().Value); } else { PrintLog(1, false); }
 
             // Lunar
             if (MercurialRachis_Enable().Value == true) { PrintLog(0, true); Reworks.MercurialRachis.Initiate(MercurialRachis_Radius().Value, MercurialRachis_PlacementRadius().Value, MercurialRachis_IsTonic().Value); } else { PrintLog(0, false); }
