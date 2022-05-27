@@ -19,8 +19,7 @@ namespace Hex3Reworks.Reworks
     public class NeedleTick
     {
         // Our main hooks
-        ItemIndex tickIndex = new ItemIndex();
-        private static void AddHooks()
+        private static void AddHooks(bool NeedleTick_FirstHit, int NeedleTick_InflictInterval)
         {
             // Remove the existing needletick effect completely
             IL.RoR2.GlobalEventManager.OnHitEnemy += (il) =>
@@ -62,7 +61,7 @@ namespace Hex3Reworks.Reworks
                         int victimItemCount = victimBody.inventory.GetItemCount(hiddenItemDef);
                         DotController.DotDef dotDef = DotController.GetDotDef(DotController.DotIndex.Fracture);
 
-                        if (victimItemCount == 0)
+                        if (victimItemCount == 0 && NeedleTick_FirstHit == true)
                         {
                             for (int i = 0; i < attackerItemCount; i++)
                             {
@@ -73,24 +72,32 @@ namespace Hex3Reworks.Reworks
                         {
                             victimBody.inventory.GiveItem(hiddenItemDef);
                         }
-                        if (victimItemCount > 8)
+                        if (victimItemCount > (NeedleTick_InflictInterval - 2))
                         {
                             for (int i = 0; i < attackerItemCount; i++)
                             {
                                 DotController.InflictDot(victim, damageInfo.attacker, DotController.DotIndex.Fracture, dotDef.interval, 1f);
                             }
-                            victimBody.inventory.RemoveItem(hiddenItemDef, 9);
+                            victimBody.inventory.RemoveItem(hiddenItemDef, (NeedleTick_InflictInterval - 1));
                         }
                     }
                 }
             };
-        }//Enemies recieve a stack <style=cStack>(+1 per stack)</style> of <style=cIsDamage>Collapse</style> when first hit. Every following <style=cIsDamage>10</style> hits inflicts another stack of <style=cIsDamage>Collapse</style>
+        }
 
         // Language token replacer
-        private static void ReplaceTokens()
+        private static void ReplaceTokens(bool NeedleTick_FirstHit, int NeedleTick_InflictInterval)
         {
-            LanguageAPI.Add("ITEM_BLEEDONHITVOID_PICKUP", "Enemies are Collapsed when hit. Every following 10 hits inflicts Collapse again. <style=cIsVoid>Corrupts all Tri-Tip Daggers.</style>");
-            LanguageAPI.Add("ITEM_BLEEDONHITVOID_DESC", "Enemies recieve a stack <style=cStack>(+1 per stack)</style> of <style=cIsDamage>Collapse</style> for <style=cIsDamage>400%</style> damage when first hit. Every following <style=cIsDamage>10</style> hits inflicts <style=cIsDamage>Collapse</style> again. <style=cIsVoid>Corrupts all Tri-Tip Daggers.</style>");
+            if (NeedleTick_FirstHit == true)
+            {
+                LanguageAPI.Add("ITEM_BLEEDONHITVOID_PICKUP", "Enemies are Collapsed when hit. Every following " + NeedleTick_InflictInterval + " hits, inflict Collapse again. <style=cIsVoid>Corrupts all Tri-Tip Daggers.</style>");
+                LanguageAPI.Add("ITEM_BLEEDONHITVOID_DESC", "Enemies recieve a stack <style=cStack>(+1 per stack)</style> of <style=cIsDamage>Collapse</style> for <style=cIsDamage>400%</style> damage when first hit. Every following <style=cIsDamage>" + NeedleTick_InflictInterval + "</style> hits, inflict <style=cIsDamage>Collapse</style> again. <style=cIsVoid>Corrupts all Tri-Tip Daggers.</style>");
+            }
+            else
+            {
+                LanguageAPI.Add("ITEM_BLEEDONHITVOID_PICKUP", "Every " + NeedleTick_InflictInterval + " hits, inflict Collapse on your enemy. <style=cIsVoid>Corrupts all Tri-Tip Daggers.</style>");
+                LanguageAPI.Add("ITEM_BLEEDONHITVOID_DESC", "Every <style=cIsDamage>" + NeedleTick_InflictInterval + "</style> hits, inflict <style=cIsDamage>Collapse</style> for <style=cIsDamage>400%</style> damage. <style=cIsVoid>Corrupts all Tri-Tip Daggers.</style>");
+            }
         }
 
         // Create a hidden item to track how many times each enemy has been hit
@@ -118,10 +125,10 @@ namespace Hex3Reworks.Reworks
         }
 
         // Apply the rework
-        public static void Initiate()
+        public static void Initiate(bool NeedleTick_FirstHit, int NeedleTick_InflictInterval)
         {
-            ReplaceTokens();
-            AddHooks();
+            ReplaceTokens(NeedleTick_FirstHit, NeedleTick_InflictInterval);
+            AddHooks(NeedleTick_FirstHit, NeedleTick_InflictInterval);
             ItemAPI.Add(new CustomItem(hiddenItemDef, CreateNullDisplayRules()));
         }
     }

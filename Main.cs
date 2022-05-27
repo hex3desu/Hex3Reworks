@@ -58,11 +58,13 @@ namespace Hex3Reworks
         // Lunar
         public ConfigEntry<bool> MercurialRachis_Enable() { return Config.Bind<bool>(new ConfigDefinition("Lunar - Mercurial Rachis", "Enable Changes"), true, new ConfigDescription("Enables changes to Mercurial Rachis.", null, Array.Empty<object>())); }
         public ConfigEntry<bool> MercurialRachis_IsTonic() { return Config.Bind<bool>(new ConfigDefinition("Lunar - Mercurial Rachis", "Apply Spinel Tonic Buff"), true, new ConfigDescription("Apply a Spinel Tonic buff instead of the vanilla Power Ward buff.", null, Array.Empty<object>())); }
-        public ConfigEntry<float> MercurialRachis_Radius() { return Config.Bind<float>(new ConfigDefinition("Lunar - Mercurial Rachis", "Radius"), 16f, new ConfigDescription("Radius of Mercurial Rachis zone in meters.", null, Array.Empty<object>())); }
+        public ConfigEntry<float> MercurialRachis_Radius() { return Config.Bind<float>(new ConfigDefinition("Lunar - Mercurial Rachis", "Radius"), 20f, new ConfigDescription("Radius of Mercurial Rachis zone in meters.", null, Array.Empty<object>())); }
         public ConfigEntry<float> MercurialRachis_PlacementRadius() { return Config.Bind<float>(new ConfigDefinition("Lunar - Mercurial Rachis", "Placement Radius"), 5f, new ConfigDescription("The maximum range from the player at which Mercurial Rachis places its wards, in meters.", null, Array.Empty<object>())); }
 
         // Void
         public ConfigEntry<bool> NeedleTick_Enable() { return Config.Bind<bool>(new ConfigDefinition("Void - NeedleTick", "Enable Changes"), true, new ConfigDescription("Enables changes to Needletick.", null, Array.Empty<object>())); }
+        public ConfigEntry<bool> NeedleTick_FirstHit() { return Config.Bind<bool>(new ConfigDefinition("Void - NeedleTick", "Inflict Collapse on First Hit"), true, new ConfigDescription("Collapse will be inflicted when you first hit an enemy.", null, Array.Empty<object>())); }
+        public ConfigEntry<int> NeedleTick_InflictInterval() { return Config.Bind<int>(new ConfigDefinition("Void - NeedleTick", "Collapse Interval"), 10, new ConfigDescription("Amount of hits needed before Collapse is inflicted again. (May break at low values)", null, Array.Empty<object>())); }
 
         public void Awake()
         {
@@ -73,7 +75,7 @@ namespace Hex3Reworks
             // Lunar
             if (MercurialRachis_Enable().Value == true) { PrintLog(0, true); Reworks.MercurialRachis.Initiate(MercurialRachis_Radius().Value, MercurialRachis_PlacementRadius().Value, MercurialRachis_IsTonic().Value); } else { PrintLog(0, false); }
             // Void
-            if (NeedleTick_Enable().Value == true) { PrintLog(2, true); Reworks.NeedleTick.Initiate(); } else { PrintLog(2, false); }
+            if (NeedleTick_Enable().Value == true) { PrintLog(2, true); Reworks.NeedleTick.Initiate(NeedleTick_FirstHit().Value, NeedleTick_InflictInterval().Value); } else { PrintLog(2, false); }
 
             Log.LogInfo("Done!");
         }
