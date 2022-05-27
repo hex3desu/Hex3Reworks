@@ -23,7 +23,7 @@ namespace Hex3Reworks
     {
         public const string ModGuid = "com.Hex3.Hex3Reworks";
         public const string ModName = "Hex3Reworks";
-        public const string ModVer = "0.0.1";
+        public const string ModVer = "0.1.0";
 
         public static ManualLogSource logger;
 
@@ -40,10 +40,11 @@ namespace Hex3Reworks
 
         private static void PrintLog(int arrayPointer, bool enabled) // Prints log infos for enabled/disabled reworks to make our lines shorter
         {
-            string[] names = new string[2]
+            string[] names = new string[3]
             { 
                 "Mercurial Rachis",
-                "Lepton Daisy"
+                "Lepton Daisy",
+                "Needletick"
             };
 
             if (enabled == true){ Log.LogInfo("Modifying " + names[arrayPointer] + "..."); }
@@ -55,10 +56,13 @@ namespace Hex3Reworks
         public ConfigEntry<float> LeptonDaisy_WeakDuration() { return Config.Bind<float>(new ConfigDefinition("Lunar - Lepton Daisy", "Weaken Duration"), 10f, new ConfigDescription("How long enemies should be weakened by each healing nova, in seconds.", null, Array.Empty<object>())); }
 
         // Lunar
-        public ConfigEntry<bool> MercurialRachis_Enable(){ return Config.Bind<bool>(new ConfigDefinition("Lunar - Mercurial Rachis", "Enable Changes"), true, new ConfigDescription("Enables changes to Mercurial Rachis.", null, Array.Empty<object>())); }
+        public ConfigEntry<bool> MercurialRachis_Enable() { return Config.Bind<bool>(new ConfigDefinition("Lunar - Mercurial Rachis", "Enable Changes"), true, new ConfigDescription("Enables changes to Mercurial Rachis.", null, Array.Empty<object>())); }
         public ConfigEntry<bool> MercurialRachis_IsTonic() { return Config.Bind<bool>(new ConfigDefinition("Lunar - Mercurial Rachis", "Apply Spinel Tonic Buff"), true, new ConfigDescription("Apply a Spinel Tonic buff instead of the vanilla Power Ward buff.", null, Array.Empty<object>())); }
-        public ConfigEntry<float> MercurialRachis_Radius(){ return Config.Bind<float>(new ConfigDefinition("Lunar - Mercurial Rachis", "Radius"), 16f, new ConfigDescription("Radius of Mercurial Rachis zone in meters.", null, Array.Empty<object>())); }
+        public ConfigEntry<float> MercurialRachis_Radius() { return Config.Bind<float>(new ConfigDefinition("Lunar - Mercurial Rachis", "Radius"), 16f, new ConfigDescription("Radius of Mercurial Rachis zone in meters.", null, Array.Empty<object>())); }
         public ConfigEntry<float> MercurialRachis_PlacementRadius() { return Config.Bind<float>(new ConfigDefinition("Lunar - Mercurial Rachis", "Placement Radius"), 5f, new ConfigDescription("The maximum range from the player at which Mercurial Rachis places its wards, in meters.", null, Array.Empty<object>())); }
+
+        // Void
+        public ConfigEntry<bool> NeedleTick_Enable() { return Config.Bind<bool>(new ConfigDefinition("Void - NeedleTick", "Enable Changes"), true, new ConfigDescription("Enables changes to Needletick.", null, Array.Empty<object>())); }
 
         public void Awake()
         {
@@ -66,9 +70,10 @@ namespace Hex3Reworks
 
             // Uncommon
             if (LeptonDaisy_Enable().Value == true) { PrintLog(1, true); Reworks.LeptonDaisy.Initiate(LeptonDaisy_WeakDuration().Value); } else { PrintLog(1, false); }
-
             // Lunar
             if (MercurialRachis_Enable().Value == true) { PrintLog(0, true); Reworks.MercurialRachis.Initiate(MercurialRachis_Radius().Value, MercurialRachis_PlacementRadius().Value, MercurialRachis_IsTonic().Value); } else { PrintLog(0, false); }
+            // Void
+            if (NeedleTick_Enable().Value == true) { PrintLog(2, true); Reworks.NeedleTick.Initiate(); } else { PrintLog(2, false); }
 
             Log.LogInfo("Done!");
         }

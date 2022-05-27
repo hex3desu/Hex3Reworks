@@ -2,13 +2,6 @@
 
 // UNCOMMON
 
-/*
-Lepton Daisy (+)
-- Release a nova during the teleporter event (+1) that heals you and Weakens enemies for 10 seconds.
-
-// The Lepton Daisy did very little to help the player, but changing its nova to weaken enemies should give it more power during the only time it's active.
-*/
-
 // LEGENDARY
 
 // BOSS
@@ -16,14 +9,6 @@ Lepton Daisy (+)
 // VOID
 
 // LUNAR
-
-/*
-Mercurial Rachis (+)
-- Occasionally drop a Ward Of Power that provides a Spinel Tonic buff to all characters in a 32m (+16m per stack) radius.
-
-// The Rachis isn't a bad item, but it lacks a reason to pick it up. You would think that it makes a fight more intense, but its effects are limited.
-// This change makes the rachis a higher risk/reward item, but also adds a synergy with Tonic, whose afflictions will end when you're in the rachis' range.
-*/
 
 /*
 Light Flux Pauldron (R)
