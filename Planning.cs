@@ -35,14 +35,6 @@ Gasoline (R)
 */
 
 /*
-Bustling Fungus (R)
-- Every 10 seconds, leave behind a zone that heals for 2.5% (+2% per stack) of your health every second to all allies within 5m (+3m per stack). 
-
-// Bungus had a simple issue: In RoR2, you are NEVER standing still, unless maybe you're Engineer
-// This rework maintains Bungus's strength as a stationary healing source, while allowing players to roam a bit around its influence, giving them freedom
-*/
-
-/*
 Bison Steak (R)
 - Every 20 seconds, gain 1 point of max health. (Affected by cooldown reduction)
 

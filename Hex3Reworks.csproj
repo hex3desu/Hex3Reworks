@@ -215,9 +215,6 @@
     <Reference Include="UnityEngine.LocalizationModule">
       <HintPath>libs\UnityEngine.LocalizationModule.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>libs\UnityEngine.Networking.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.ParticleSystemModule">
       <HintPath>libs\UnityEngine.ParticleSystemModule.dll</HintPath>
     </Reference>

@@ -11,6 +11,7 @@ The aim is, rather than making simple boosts or nerfs to stat values, to change 
 
 | Item  | Change | Notes |
 | ------------- | ------------- | ------------- |
+| ![bungusImg] | **Bustling Fungus**<br>Every **10** seconds, leave behind a **fungal zone** that **heals** for **2%** <sup>(+2% per stack)</sup> of your **max health** every second to all allies within **5m** <sup>(+2m per stack)</sup>. | <details>Bungus had a simple issue: In RoR2, you are never standing still, unless maybe you're an Engineer turret. With these changes, Bustling Fungus is still great for stationary Engineer, but other survivors can now use it to create 'safe zones' to heal up in. To compensate for the extra power, its healing has been reduced.</details> |
 | ![daisyImg] | **Lepton Daisy**<br>Release a **healing nova** during the Teleporter event, **healing** allies for **50%** of their maximum health and **weakening** enemies for **10** seconds. Occurs **1** <sup>(+1 per stack)</sup> times. | <details>Lepton Daisy had very little use for a green item. This change should maintain its purpose as an item that makes your teleporter events easier, and also give the Weaken debuff another chance to shine.</details> |
 | ![rachisImg] | **Mercurial Rachis**<br>Creates a Ward Of Power at your location that provides a **Spinel Tonic** buff to all characters within **20m** <sup>(+10m per stack)</sup>. | <details>The Rachis is already a good item, so giving it a synergy with Spinel Tonic seemed like a fun way to bring the Lunar pool together. The stronger buff should raise the stakes of the fight more.</details> |
 | ![tickImg] | **Needletick**<br>Enemies recieve a stack <sup>(+1 per stack)</sup> of **Collapse** for **400%** damage when first hit. Every following **10** hits, inflict **Collapse** again. **Corrupts all Tri-Tip Daggers**. | <details>Changing the proc conditions for Needletick should make it a more consistent alternative to the Tri-Tip Dagger, with the guaranteed proc on first hit being an advantage to help it compete with the Bleed effect.</details> |
@@ -20,6 +21,10 @@ The aim is, rather than making simple boosts or nerfs to stat values, to change 
 * Please give feedback/bug reports on the RoR2 Modding discord, or by messaging directly: hex3#7952
 
 # Changelog
+
+### 0.1.2
+* Added rework for Bustling Fungus
+* Lepton Daisy is no longer called "Lunar" in configs
 
 ### 0.1.1
 * Added config option for Needletick that allows enemies to either use the reworked Needletick's collapse, or Vanilla collapse.
@@ -31,7 +36,9 @@ The aim is, rather than making simple boosts or nerfs to stat values, to change 
 * Initial release
 * Reworks for Mercurial Rachis, Lepton Daisy and Needletick
 
-[DaisyImg]:
+[bungusImg]:
+https://static.wikia.nocookie.net/riskofrain2_gamepedia_en/images/3/33/Bustling_Fungus.png
+[daisyImg]:
 https://static.wikia.nocookie.net/riskofrain2_gamepedia_en/images/7/73/Lepton_Daisy.png
 [rachisImg]:
 https://static.wikia.nocookie.net/riskofrain2_gamepedia_en/images/2/25/Mercurial_Rachis.png

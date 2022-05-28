@@ -25,26 +25,34 @@ namespace Hex3Reworks
     {
         public const string ModGuid = "com.Hex3.Hex3Reworks";
         public const string ModName = "Hex3Reworks";
-        public const string ModVer = "0.1.1";
+        public const string ModVer = "0.1.2";
 
         public static ManualLogSource logger;
 
         private static void PrintLog(int arrayPointer, bool enabled) // Prints log infos for enabled/disabled reworks to make our lines shorter
         {
-            string[] names = new string[3]
+            string[] names = new string[4]
             { 
                 "Mercurial Rachis",
                 "Lepton Daisy",
-                "Needletick"
+                "Needletick",
+                "Bustling Fungus"
             };
 
             if (enabled == true){ Log.LogInfo("Modifying " + names[arrayPointer] + "..."); }
             else { Log.LogInfo(names[arrayPointer] + " changes disabled."); }
         }
 
+        // Common
+        public ConfigEntry<bool> BustlingFungus_Enable() { return Config.Bind<bool>(new ConfigDefinition("Common - Bustling Fungus", "Enable Changes"), true, new ConfigDescription("Enables changes to Bustling Fungus.", null, Array.Empty<object>())); }
+        public ConfigEntry<float> BustlingFungus_Healing() { return Config.Bind<float>(new ConfigDefinition("Common - Bustling Fungus", "Fungus Healing"), 0.02f, new ConfigDescription("Fraction of max health healed per second.", null, Array.Empty<object>())); }
+        public ConfigEntry<float> BustlingFungus_Radius() { return Config.Bind<float>(new ConfigDefinition("Common - Bustling Fungus", "Base Zone Radius"), 5f, new ConfigDescription("Base radius of Bustling Fungus zone in meters.", null, Array.Empty<object>())); }
+        public ConfigEntry<float> BustlingFungus_RadiusStack() { return Config.Bind<float>(new ConfigDefinition("Common - Bustling Fungus", "Zone Radius Per Stack"), 2f, new ConfigDescription("Extra radius of Bustling Fungus zone per stack in meters.", null, Array.Empty<object>())); }
+        public ConfigEntry<float> BustlingFungus_ZoneInterval() { return Config.Bind<float>(new ConfigDefinition("Common - Bustling Fungus", "Zone Placement Interval"), 10f, new ConfigDescription("How often, in seconds, that zones are placed.", null, Array.Empty<object>())); }
+
         // Uncommon
-        public ConfigEntry<bool> LeptonDaisy_Enable() { return Config.Bind<bool>(new ConfigDefinition("Lunar - Lepton Daisy", "Enable Changes"), true, new ConfigDescription("Enables changes to Lepton Daisy.", null, Array.Empty<object>())); }
-        public ConfigEntry<float> LeptonDaisy_WeakDuration() { return Config.Bind<float>(new ConfigDefinition("Lunar - Lepton Daisy", "Weaken Duration"), 10f, new ConfigDescription("How long enemies should be weakened by each healing nova, in seconds.", null, Array.Empty<object>())); }
+        public ConfigEntry<bool> LeptonDaisy_Enable() { return Config.Bind<bool>(new ConfigDefinition("Uncommon - Lepton Daisy", "Enable Changes"), true, new ConfigDescription("Enables changes to Lepton Daisy.", null, Array.Empty<object>())); }
+        public ConfigEntry<float> LeptonDaisy_WeakDuration() { return Config.Bind<float>(new ConfigDefinition("Uncommon - Lepton Daisy", "Weaken Duration"), 10f, new ConfigDescription("How long enemies should be weakened by each healing nova, in seconds.", null, Array.Empty<object>())); }
 
         // Lunar
         public ConfigEntry<bool> MercurialRachis_Enable() { return Config.Bind<bool>(new ConfigDefinition("Lunar - Mercurial Rachis", "Enable Changes"), true, new ConfigDescription("Enables changes to Mercurial Rachis.", null, Array.Empty<object>())); }
@@ -62,6 +70,8 @@ namespace Hex3Reworks
         {
             Log.Init(Logger);
 
+            // Common
+            if (BustlingFungus_Enable().Value == true) { PrintLog(3, true); Reworks.BustlingFungus.Initiate(BustlingFungus_Healing().Value, BustlingFungus_Radius().Value, BustlingFungus_RadiusStack().Value, BustlingFungus_ZoneInterval().Value); } else { PrintLog(3, false); }
             // Uncommon
             if (LeptonDaisy_Enable().Value == true) { PrintLog(1, true); Reworks.LeptonDaisy.Initiate(LeptonDaisy_WeakDuration().Value); } else { PrintLog(1, false); }
             // Lunar
