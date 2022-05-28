@@ -1,12 +1,94 @@
-﻿// COMMON
+﻿/*
+PLANS (Subject to change):
+
+COOLDOWNS: Unify "cooldowns" to include item cooldowns such as Bands, Safer Spaces and more. Balance existing cooldown reduction accordingly
+CRITS: Higher damage shots should have a higher crit chance, making one-shot builds more viable
+ITEM SETS: Each build has its item set. Example:
+    - On-kill: Larva, Wisp, Gasoline, Infusion...
+    - Debuff: Gasoline, Ignition tank, Dagger, Death Mark...
+    - Interaction: Polyp, Caffeinator, Fireworks...
+    - Money: Pennies, Ghor's Tome, Crowdfunder, Another item?
+    - Healing: Nkuhana's, Bungus, Leeching seed...
+    - Consumable: Elixir, Delicate Watch...
+    - Tank: Repulsion Armor, Rose Buckler, Aegis...
+    - Cooldowns: Bison Steak, Bands, Safer Spaces, Brainstalks...
+
+I want to rebalance the game around item sets, so that RoR2 feels less like you're collecting extra items for the pile, and more like you're thinking about what to get
+To steer the game's balance more towards achieving builds, a few things should be done:
+    - Improve options for exchanging items
+    - Improve category chests and category options (Let player choose which category they want?)
+    - Make item-items like Rusted Key, Shipment and Regenerating Scrap more open to choice
+
+
+*/
+
+// These are all just ideas!
+
+// COMMON
+
+/*
+Gasoline (R)
+- Killing an enemy drops a flaming pool beneath them which lasts for 5 seconds and ignites enemies for 200% (+100% per stack) damage
+
+// Gasoline was a must-take in all circumstancees, and it made AOE incredibly easy to obtain even on single-target survivors like Railgunner. Will-O-The-Wisp also made it redundant
+// It should still serve as a good area denial tool, but using it effectively won't be as simple.
+*/
+
+/*
+Bustling Fungus (R)
+- Every 10 seconds, leave behind a zone that heals for 2.5% (+2% per stack) of your health every second to all allies within 5m (+3m per stack). 
+
+// Bungus had a simple issue: In RoR2, you are NEVER standing still, unless maybe you're Engineer
+// This rework maintains Bungus's strength as a stationary healing source, while allowing players to roam a bit around its influence, giving them freedom
+*/
+
+/*
+Bison Steak (R)
+- Every 20 seconds, gain 1 point of max health. (Affected by cooldown reduction)
+
+// Bison Steak was probably the weakest item in the game, but I wanted to keep an item that increases your max HP without it being a percent buff.
+// It takes about 8-9 minutes for Bison Steak to ramp up to its original power, but it will continue from then on
+*/
+
+/*
+Armor Piercing Rounds (R)
+- Hits that deal over 400% damage are stronger.
+
+// AP Rounds was just a damage boost without much that made it feel unique
+// Stacking AP Rounds with Crowbars, Shurikens, or any burst damage items allows for a focus on burst damage hits. Make sure something like commando m1 can't proc this
+*/
 
 // UNCOMMON
+
+/*
+Ghor's Tome (R)
+- Earning money grants a stacking armor buff that lasts 5 seconds. Killing enemies has a 20% chance to drop a gold nugget (worth 1/4 of vanilla)
+
+// Ghor's Tome was nice to have in the beginning of the game, but after that?
+// This should give it a purpose and help it synergize with Roll Of Pennies, which the armor buff highly benefits
+*/
 
 // LEGENDARY
 
 // BOSS
 
+/*
+Halcyon Seed (R)
+- Hoarding enough money spawns Aurelionite to fight by your side. (Money required to summon Aurelionite increases exponentially each time it happens this stage)
+
+// Thematic, works well with a gold-based build, AND lots of gold is required to enter the golden coast in the first place. Neat!
+*/
+
 // VOID
+
+/*
+Pluripotent Larva (R)
+- Your on-kill effects are twice as potent.
+
+// Dio's makes the player die twice, Larva makes the enemies die twice as hard
+// Forgive Me Please, Infusion, Pauldron and other on-kill items can be somewhat underpowered, especially in boss fights. Having an extra bit of synergy for them should be useful
+// Original larva felt boring because it was just a free Dio's most of the time, this is a new effect entirely
+*/
 
 // LUNAR
 

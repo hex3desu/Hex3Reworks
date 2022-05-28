@@ -12,11 +12,13 @@ using UnityEngine;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using Hex3Reworks.Logging;
+using Hex3Reworks.Helpers;
 
 namespace Hex3Reworks
 {
     [BepInPlugin(ModGuid, ModName, ModVer)]
     [BepInDependency(R2API.R2API.PluginGUID, R2API.R2API.PluginVersion)]
+    [BepInDependency("com.Moffein.EliteReworks", BepInDependency.DependencyFlags.SoftDependency)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
     [R2APISubmoduleDependency(nameof(ItemAPI), nameof(LanguageAPI), nameof(RecalculateStatsAPI), nameof(PrefabAPI))]
     public class Main : BaseUnityPlugin
@@ -26,17 +28,6 @@ namespace Hex3Reworks
         public const string ModVer = "0.1.0";
 
         public static ManualLogSource logger;
-
-        /*
-        Rules of the Rework:
-        1 - Never ADD a new system to the game! To avoid overcomplicating things, just use what already exists in Vanilla.
-        2 - Items should still be FUN and POWERFUL. Items that are always OP should be narrowed to specific circumstances, underpowered items should be given a niche.
-        3 - You should ALWAYS have a reason to take a lunar item. Rather than flat stat changes, lunars should change how you play.
-        4 - Void items should have a different NICHE than their normal counterparts, but should never be objectively better. (Looking at you, Polylute)
-        5 - SYNERGY! Cool item combos and build types should be encouraged.
-        6 - The rework should be modular, so one can disable/enable it whenever they want without affecting other reworks.
-        7 - Configurability. Most of the reworks' values should be modifiable in the config editor, so people can change things about vanilla items that they couldn't before.
-        */
 
         private static void PrintLog(int arrayPointer, bool enabled) // Prints log infos for enabled/disabled reworks to make our lines shorter
         {
@@ -65,6 +56,7 @@ namespace Hex3Reworks
         public ConfigEntry<bool> NeedleTick_Enable() { return Config.Bind<bool>(new ConfigDefinition("Void - NeedleTick", "Enable Changes"), true, new ConfigDescription("Enables changes to Needletick.", null, Array.Empty<object>())); }
         public ConfigEntry<bool> NeedleTick_FirstHit() { return Config.Bind<bool>(new ConfigDefinition("Void - NeedleTick", "Inflict Collapse on First Hit"), true, new ConfigDescription("Collapse will be inflicted when you first hit an enemy.", null, Array.Empty<object>())); }
         public ConfigEntry<int> NeedleTick_InflictInterval() { return Config.Bind<int>(new ConfigDefinition("Void - NeedleTick", "Collapse Interval"), 10, new ConfigDescription("Amount of hits needed before Collapse is inflicted again. (May break at low values)", null, Array.Empty<object>())); }
+        public ConfigEntry<bool> NeedleTick_VoidEnemiesCollapse() { return Config.Bind<bool>(new ConfigDefinition("Void - NeedleTick", "Voidtouched enemies can use new Collapse"), false, new ConfigDescription("Void enemies will collapse on first hit, and on every 10th hit afterwards. If false, enemies will use vanilla Collapse.", null, Array.Empty<object>())); }
 
         public void Awake()
         {
@@ -75,7 +67,7 @@ namespace Hex3Reworks
             // Lunar
             if (MercurialRachis_Enable().Value == true) { PrintLog(0, true); Reworks.MercurialRachis.Initiate(MercurialRachis_Radius().Value, MercurialRachis_PlacementRadius().Value, MercurialRachis_IsTonic().Value); } else { PrintLog(0, false); }
             // Void
-            if (NeedleTick_Enable().Value == true) { PrintLog(2, true); Reworks.NeedleTick.Initiate(NeedleTick_FirstHit().Value, NeedleTick_InflictInterval().Value); } else { PrintLog(2, false); }
+            if (NeedleTick_Enable().Value == true) { PrintLog(2, true); Reworks.NeedleTick.Initiate(NeedleTick_FirstHit().Value, NeedleTick_InflictInterval().Value, NeedleTick_VoidEnemiesCollapse().Value); } else { PrintLog(2, false); }
 
             Log.LogInfo("Done!");
         }

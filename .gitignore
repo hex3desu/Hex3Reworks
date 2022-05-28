@@ -9,6 +9,9 @@
 *.userosscache
 *.sln.docstates
 
+# Ignore some more things
+[Pp]lanning.cs
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 

@@ -13,13 +13,14 @@ using UnityEngine.AddressableAssets;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using Hex3Reworks.Logging;
+using Hex3Reworks.Helpers;
 
 namespace Hex3Reworks.Reworks
 {
     public class NeedleTick
     {
         // Our main hooks
-        private static void AddHooks(bool NeedleTick_FirstHit, int NeedleTick_InflictInterval)
+        private static void AddHooks(bool NeedleTick_FirstHit, int NeedleTick_InflictInterval, bool NeedleTick_VoidEnemiesCollapse)
         {
             // Remove the existing needletick effect completely
             IL.RoR2.GlobalEventManager.OnHitEnemy += (il) =>
@@ -60,29 +61,73 @@ namespace Hex3Reworks.Reworks
                         int attackerItemCount = attackerBody.inventory.GetItemCount(tickDef.itemIndex);
                         int victimItemCount = victimBody.inventory.GetItemCount(hiddenItemDef);
                         DotController.DotDef dotDef = DotController.GetDotDef(DotController.DotIndex.Fracture);
+                        bool canVoidFracture = false;
 
-                        if (victimItemCount == 0 && NeedleTick_FirstHit == true)
+                        // Flag to allow enemies to inflict new fracture
+                        if (attackerBody.HasBuff(DLC1Content.Buffs.EliteVoid) && NeedleTick_VoidEnemiesCollapse == true)
                         {
-                            for (int i = 0; i < attackerItemCount; i++)
-                            {
-                                DotController.InflictDot(victim, damageInfo.attacker, DotController.DotIndex.Fracture, dotDef.interval, 1f);
-                            }
+                            canVoidFracture = true;
                         }
-                        if (attackerItemCount > 0)
+
+                        // Check for team first, to prevent self damage...
+                        if (attackerBody.teamComponent && victimBody.teamComponent && attackerBody.teamComponent.teamIndex != victimBody.teamComponent.teamIndex)
                         {
-                            victimBody.inventory.GiveItem(hiddenItemDef);
-                        }
-                        if (victimItemCount > (NeedleTick_InflictInterval - 2))
-                        {
-                            for (int i = 0; i < attackerItemCount; i++)
+                            if (victimItemCount == 0 && NeedleTick_FirstHit == true)
                             {
-                                DotController.InflictDot(victim, damageInfo.attacker, DotController.DotIndex.Fracture, dotDef.interval, 1f);
+                                if (canVoidFracture == true && EliteReworksCompatibility.enabled == false)
+                                {
+                                    ApplyFracture(damageInfo, victim, dotDef);
+                                }
+                                else
+                                {
+                                    for (int i = 0; i < attackerItemCount; i++)
+                                    {
+                                        ApplyFracture(damageInfo, victim, dotDef);
+                                    }
+                                }
                             }
-                            victimBody.inventory.RemoveItem(hiddenItemDef, (NeedleTick_InflictInterval - 1));
+                            if (attackerItemCount > 0 || canVoidFracture == true)
+                            {
+                                victimBody.inventory.GiveItem(hiddenItemDef);
+                                if (victimBody.inventory.GetItemCount(hiddenItemDef) > 50)
+                                {
+                                    victimBody.inventory.RemoveItem(hiddenItemDef, 40); // Prevent item buildup
+                                }
+                            }
+                            if (attackerBody.HasBuff(DLC1Content.Buffs.EliteVoid) && NeedleTick_VoidEnemiesCollapse == false && attackerBody.master && EliteReworksCompatibility.enabled == false)
+                            {
+                                if (Util.CheckRoll(damageInfo.procCoefficient * 100f, attackerBody.master))
+                                {
+                                    ApplyFracture(damageInfo, victim, dotDef);
+                                }
+                            }
+                            if (victimItemCount > (NeedleTick_InflictInterval - 2))
+                            {
+                                if (canVoidFracture == true && EliteReworksCompatibility.enabled == false)
+                                {
+                                    ApplyFracture(damageInfo, victim, dotDef);
+                                    victimBody.inventory.RemoveItem(hiddenItemDef, (NeedleTick_InflictInterval - 1));
+                                }
+                                else
+                                {
+                                    for (int i = 0; i < attackerItemCount; i++)
+                                    {
+                                        ApplyFracture(damageInfo, victim, dotDef);
+                                    }
+                                    victimBody.inventory.RemoveItem(hiddenItemDef, (NeedleTick_InflictInterval - 1));
+                                }
+                            }
                         }
                     }
                 }
             };
+
+            void ApplyFracture(DamageInfo damageInfo, GameObject victim, DotController.DotDef dotDef)
+            {
+                ProcChainMask procChainMask3 = damageInfo.procChainMask;
+                procChainMask3.AddProc(ProcType.FractureOnHit);
+                DotController.InflictDot(victim, damageInfo.attacker, DotController.DotIndex.Fracture, dotDef.interval, 1f);
+            }
         }
 
         // Language token replacer
@@ -125,10 +170,10 @@ namespace Hex3Reworks.Reworks
         }
 
         // Apply the rework
-        public static void Initiate(bool NeedleTick_FirstHit, int NeedleTick_InflictInterval)
+        public static void Initiate(bool NeedleTick_FirstHit, int NeedleTick_InflictInterval, bool NeedleTick_VoidEnemiesCollapse)
         {
             ReplaceTokens(NeedleTick_FirstHit, NeedleTick_InflictInterval);
-            AddHooks(NeedleTick_FirstHit, NeedleTick_InflictInterval);
+            AddHooks(NeedleTick_FirstHit, NeedleTick_InflictInterval, NeedleTick_VoidEnemiesCollapse);
             ItemAPI.Add(new CustomItem(hiddenItemDef, CreateNullDisplayRules()));
         }
     }
