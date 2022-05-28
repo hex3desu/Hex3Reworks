@@ -25,7 +25,7 @@ namespace Hex3Reworks
     {
         public const string ModGuid = "com.Hex3.Hex3Reworks";
         public const string ModName = "Hex3Reworks";
-        public const string ModVer = "0.1.0";
+        public const string ModVer = "0.1.1";
 
         public static ManualLogSource logger;
 

@@ -41,6 +41,9 @@
     <Reference Include="Decalicious">
       <HintPath>libs\Decalicious.dll</HintPath>
     </Reference>
+    <Reference Include="EliteReworks">
+      <HintPath>libs\SoftDependencies\EliteReworks.dll</HintPath>
+    </Reference>
     <Reference Include="Facepunch.Steamworks">
       <HintPath>libs\Facepunch.Steamworks.dll</HintPath>
     </Reference>

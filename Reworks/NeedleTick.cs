@@ -69,12 +69,19 @@ namespace Hex3Reworks.Reworks
                             canVoidFracture = true;
                         }
 
+                        // Elite Reworks compatibility
+                        bool eliteReworksVoidEnabled = false;
+                        if (EliteReworksCompatibility.enabled == true)
+                        {
+                            eliteReworksVoidEnabled = EliteReworksCompatibility.voidEnabled;
+                        }
+
                         // Check for team first, to prevent self damage...
                         if (attackerBody.teamComponent && victimBody.teamComponent && attackerBody.teamComponent.teamIndex != victimBody.teamComponent.teamIndex)
                         {
                             if (victimItemCount == 0 && NeedleTick_FirstHit == true)
                             {
-                                if (canVoidFracture == true && EliteReworksCompatibility.enabled == false)
+                                if (canVoidFracture == true && eliteReworksVoidEnabled == false)
                                 {
                                     ApplyFracture(damageInfo, victim, dotDef);
                                 }
@@ -94,7 +101,7 @@ namespace Hex3Reworks.Reworks
                                     victimBody.inventory.RemoveItem(hiddenItemDef, 40); // Prevent item buildup
                                 }
                             }
-                            if (attackerBody.HasBuff(DLC1Content.Buffs.EliteVoid) && NeedleTick_VoidEnemiesCollapse == false && attackerBody.master && EliteReworksCompatibility.enabled == false)
+                            if (attackerBody.HasBuff(DLC1Content.Buffs.EliteVoid) && NeedleTick_VoidEnemiesCollapse == false && attackerBody.master && eliteReworksVoidEnabled == false)
                             {
                                 if (Util.CheckRoll(damageInfo.procCoefficient * 100f, attackerBody.master))
                                 {
@@ -103,7 +110,7 @@ namespace Hex3Reworks.Reworks
                             }
                             if (victimItemCount > (NeedleTick_InflictInterval - 2))
                             {
-                                if (canVoidFracture == true && EliteReworksCompatibility.enabled == false)
+                                if (canVoidFracture == true && eliteReworksVoidEnabled == false)
                                 {
                                     ApplyFracture(damageInfo, victim, dotDef);
                                     victimBody.inventory.RemoveItem(hiddenItemDef, (NeedleTick_InflictInterval - 1));

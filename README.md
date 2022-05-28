@@ -25,6 +25,7 @@ The aim is, rather than making simple boosts or nerfs to stat values, to change 
 * Added config option for Needletick that allows enemies to either use the reworked Needletick's collapse, or Vanilla collapse.
 * Needletick should no longer proc off of self damage
 * Void enemies can now use Collapse properly
+* EliteReworks compatibility
 
 ### 0.1.0
 * Initial release
