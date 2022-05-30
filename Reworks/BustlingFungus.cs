@@ -35,19 +35,26 @@ namespace Hex3Reworks.Reworks
                 ilcursor.Emit(OpCodes.Ret);
             };
 
-            float mushroomAge = 0f;
-
             // Every 10 seconds, create a new zone
             On.RoR2.Items.MushroomBodyBehavior.FixedUpdate += (orig, self) =>
             {
+                orig(self);
+
+                if (self.body.GetComponent<MushroomTimer>() == false)
+                {
+                    self.body.AddItemBehavior<MushroomTimer>(self.stack);
+                }
                 if (!UnityEngine.Networking.NetworkServer.active)
                 {
                     return;
                 }
+
                 int stack = self.stack;
                 float networkradius = self.body.radius + BustlingFungus_Radius + (BustlingFungus_RadiusStack * (float)stack);
-                mushroomAge += Time.fixedDeltaTime;
-                if (mushroomAge > BustlingFungus_ZoneInterval) // Destroy existing mushroom wards, and create a new one
+                MushroomTimer mushroomTimer = self.body.GetComponent<MushroomTimer>();
+
+                mushroomTimer.interval += Time.fixedDeltaTime;
+                if (mushroomTimer.interval > BustlingFungus_ZoneInterval) // Destroy existing mushroom wards, and create a new one
                 {
                     UnityEngine.Object.Destroy(self.mushroomWardGameObject);
                     self.mushroomWardGameObject = null;
@@ -56,7 +63,7 @@ namespace Hex3Reworks.Reworks
                     self.mushroomWardTeamFilter = self.mushroomWardGameObject.GetComponent<TeamFilter>();
                     self.mushroomHealingWard = self.mushroomWardGameObject.GetComponent<HealingWard>();
                     UnityEngine.Networking.NetworkServer.Spawn(self.mushroomWardGameObject);
-                    mushroomAge = 0f;
+                    mushroomTimer.interval = 0f;
                 }
                 if (self.mushroomHealingWard) // Define the healing ward's variables
                 {
@@ -69,9 +76,12 @@ namespace Hex3Reworks.Reworks
                 {
                     self.mushroomWardTeamFilter.teamIndex = self.body.teamComponent.teamIndex;
                 }
-
-                orig(self);
             };
+        }
+
+        public class MushroomTimer : CharacterBody.ItemBehavior
+        {
+            public float interval = 0f;
         }
 
         // Language token replacer

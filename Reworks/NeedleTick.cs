@@ -142,8 +142,8 @@ namespace Hex3Reworks.Reworks
         {
             if (NeedleTick_FirstHit == true)
             {
-                LanguageAPI.Add("ITEM_BLEEDONHITVOID_PICKUP", "Enemies are Collapsed when hit. Every following " + NeedleTick_InflictInterval + " hits, inflict Collapse again. <style=cIsVoid>Corrupts all Tri-Tip Daggers.</style>");
-                LanguageAPI.Add("ITEM_BLEEDONHITVOID_DESC", "Enemies recieve a stack <style=cStack>(+1 per stack)</style> of <style=cIsDamage>Collapse</style> for <style=cIsDamage>400%</style> damage when first hit. Every following <style=cIsDamage>" + NeedleTick_InflictInterval + "</style> hits, inflict <style=cIsDamage>Collapse</style> again. <style=cIsVoid>Corrupts all Tri-Tip Daggers.</style>");
+                LanguageAPI.Add("ITEM_BLEEDONHITVOID_PICKUP", "Enemies are Collapsed when hit. Hitting them " + NeedleTick_InflictInterval + " times inflicts Collapse again. <style=cIsVoid>Corrupts all Tri-Tip Daggers.</style>");
+                LanguageAPI.Add("ITEM_BLEEDONHITVOID_DESC", "Enemies recieve a stack <style=cStack>(+1 per stack)</style> of <style=cIsDamage>Collapse</style> for <style=cIsDamage>400%</style> damage when first hit. Hitting them <style=cIsDamage>" + NeedleTick_InflictInterval + "</style> times inflicts <style=cIsDamage>Collapse</style> <style=cStack>(+1 per stack)</style> again. <style=cIsVoid>Corrupts all Tri-Tip Daggers.</style>");
             }
             else
             {

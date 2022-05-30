@@ -25,7 +25,7 @@ namespace Hex3Reworks
     {
         public const string ModGuid = "com.Hex3.Hex3Reworks";
         public const string ModName = "Hex3Reworks";
-        public const string ModVer = "0.1.2";
+        public const string ModVer = "0.1.3";
 
         public static ManualLogSource logger;
 
@@ -46,7 +46,7 @@ namespace Hex3Reworks
         // Common
         public ConfigEntry<bool> BustlingFungus_Enable() { return Config.Bind<bool>(new ConfigDefinition("Common - Bustling Fungus", "Enable Changes"), true, new ConfigDescription("Enables changes to Bustling Fungus.", null, Array.Empty<object>())); }
         public ConfigEntry<float> BustlingFungus_Healing() { return Config.Bind<float>(new ConfigDefinition("Common - Bustling Fungus", "Fungus Healing"), 0.02f, new ConfigDescription("Fraction of max health healed per second.", null, Array.Empty<object>())); }
-        public ConfigEntry<float> BustlingFungus_Radius() { return Config.Bind<float>(new ConfigDefinition("Common - Bustling Fungus", "Base Zone Radius"), 5f, new ConfigDescription("Base radius of Bustling Fungus zone in meters.", null, Array.Empty<object>())); }
+        public ConfigEntry<float> BustlingFungus_Radius() { return Config.Bind<float>(new ConfigDefinition("Common - Bustling Fungus", "Base Zone Radius"), 3f, new ConfigDescription("Base radius of Bustling Fungus zone in meters.", null, Array.Empty<object>())); }
         public ConfigEntry<float> BustlingFungus_RadiusStack() { return Config.Bind<float>(new ConfigDefinition("Common - Bustling Fungus", "Zone Radius Per Stack"), 2f, new ConfigDescription("Extra radius of Bustling Fungus zone per stack in meters.", null, Array.Empty<object>())); }
         public ConfigEntry<float> BustlingFungus_ZoneInterval() { return Config.Bind<float>(new ConfigDefinition("Common - Bustling Fungus", "Zone Placement Interval"), 10f, new ConfigDescription("How often, in seconds, that zones are placed.", null, Array.Empty<object>())); }
 
