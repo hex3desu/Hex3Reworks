@@ -34,31 +34,18 @@ namespace Hex3Reworks.Reworks
                 ilcursor.RemoveRange(18);
             };
 
-            ItemDef tickDef = new ItemDef();
             On.RoR2.GlobalEventManager.OnHitEnemy += (orig, self, damageInfo, victim) =>
             {
                 orig(self, damageInfo, victim);
 
-                // If the itemdef for Needletick is known, no need to retrieve it
-                if (tickDef.name != "BleedOnHitVoid")
-                {
-                    foreach (ItemDef item in ItemCatalog.itemDefs)
-                    {
-                        if (item.name == "BleedOnHitVoid")
-                        {
-                            tickDef = item;
-                        }
-                    }
-                }
-
                 // If the attacker has a needletick, give a hidden item to the victim. Having enough hidden items will trigger collapse.
                 if (victim.GetComponent<CharacterBody> != null && victim.GetComponent<CharacterBody>().inventory)
                 {
-                    if (damageInfo.attacker && damageInfo.attacker.GetComponent<CharacterBody> != null && damageInfo.attacker.GetComponent<CharacterBody>().inventory)
+                    if (damageInfo.attacker && damageInfo.attacker.GetComponent<CharacterBody> != null && damageInfo.attacker.GetComponent<CharacterBody>().inventory && !damageInfo.procChainMask.HasProc(ProcType.Missile) && !damageInfo.procChainMask.HasProc(ProcType.FractureOnHit))
                     {
                         CharacterBody attackerBody = damageInfo.attacker.GetComponent<CharacterBody>();
                         CharacterBody victimBody = victim.GetComponent<CharacterBody>();
-                        int attackerItemCount = attackerBody.inventory.GetItemCount(tickDef.itemIndex);
+                        int attackerItemCount = attackerBody.inventory.GetItemCount(DLC1Content.Items.BleedOnHitVoid.itemIndex);
                         int victimItemCount = victimBody.inventory.GetItemCount(hiddenItemDef);
                         DotController.DotDef dotDef = DotController.GetDotDef(DotController.DotIndex.Fracture);
                         bool canVoidFracture = false;
@@ -96,10 +83,6 @@ namespace Hex3Reworks.Reworks
                             if (attackerItemCount > 0 || canVoidFracture == true)
                             {
                                 victimBody.inventory.GiveItem(hiddenItemDef);
-                                if (victimBody.inventory.GetItemCount(hiddenItemDef) > 50)
-                                {
-                                    victimBody.inventory.RemoveItem(hiddenItemDef, 40); // Prevent item buildup
-                                }
                             }
                             if (attackerBody.HasBuff(DLC1Content.Buffs.EliteVoid) && NeedleTick_VoidEnemiesCollapse == false && attackerBody.master && eliteReworksVoidEnabled == false)
                             {
@@ -108,12 +91,13 @@ namespace Hex3Reworks.Reworks
                                     ApplyFracture(damageInfo, victim, dotDef);
                                 }
                             }
-                            if (victimItemCount > (NeedleTick_InflictInterval - 2))
+                            if (victimItemCount > (NeedleTick_InflictInterval - 1))
                             {
                                 if (canVoidFracture == true && eliteReworksVoidEnabled == false)
                                 {
                                     ApplyFracture(damageInfo, victim, dotDef);
-                                    victimBody.inventory.RemoveItem(hiddenItemDef, (NeedleTick_InflictInterval - 1));
+                                    victimBody.inventory.RemoveItem(hiddenItemDef, 999);
+                                    victimBody.inventory.GiveItem(hiddenItemDef);
                                 }
                                 else
                                 {
@@ -121,7 +105,8 @@ namespace Hex3Reworks.Reworks
                                     {
                                         ApplyFracture(damageInfo, victim, dotDef);
                                     }
-                                    victimBody.inventory.RemoveItem(hiddenItemDef, (NeedleTick_InflictInterval - 1));
+                                    victimBody.inventory.RemoveItem(hiddenItemDef, 999);
+                                    victimBody.inventory.GiveItem(hiddenItemDef);
                                 }
                             }
                         }
@@ -131,8 +116,7 @@ namespace Hex3Reworks.Reworks
 
             void ApplyFracture(DamageInfo damageInfo, GameObject victim, DotController.DotDef dotDef)
             {
-                ProcChainMask procChainMask3 = damageInfo.procChainMask;
-                procChainMask3.AddProc(ProcType.FractureOnHit);
+                damageInfo.procChainMask.AddProc(ProcType.FractureOnHit);
                 DotController.InflictDot(victim, damageInfo.attacker, DotController.DotIndex.Fracture, dotDef.interval, 1f);
             }
         }
@@ -142,8 +126,8 @@ namespace Hex3Reworks.Reworks
         {
             if (NeedleTick_FirstHit == true)
             {
-                LanguageAPI.Add("ITEM_BLEEDONHITVOID_PICKUP", "Enemies are Collapsed when hit. Hitting them " + NeedleTick_InflictInterval + " times inflicts Collapse again. <style=cIsVoid>Corrupts all Tri-Tip Daggers.</style>");
-                LanguageAPI.Add("ITEM_BLEEDONHITVOID_DESC", "Enemies recieve a stack <style=cStack>(+1 per stack)</style> of <style=cIsDamage>Collapse</style> for <style=cIsDamage>400%</style> damage when first hit. Hitting them <style=cIsDamage>" + NeedleTick_InflictInterval + "</style> times inflicts <style=cIsDamage>Collapse</style> <style=cStack>(+1 per stack)</style> again. <style=cIsVoid>Corrupts all Tri-Tip Daggers.</style>");
+                LanguageAPI.Add("ITEM_BLEEDONHITVOID_PICKUP", "Enemies are Collapsed when hit. Each time Collapse is inflicted, hitting the enemy " + NeedleTick_InflictInterval + " times inflicts Collapse again. <style=cIsVoid>Corrupts all Tri-Tip Daggers.</style>");
+                LanguageAPI.Add("ITEM_BLEEDONHITVOID_DESC", "Enemies recieve a stack <style=cStack>(+1 per stack)</style> of <style=cIsDamage>Collapse</style> for <style=cIsDamage>400%</style> damage when first hit. Each time Collapse is inflicted, hitting the enemy <style=cIsDamage>" + NeedleTick_InflictInterval + "</style> times inflicts <style=cIsDamage>Collapse</style> <style=cStack>(+1 per stack)</style> again. <style=cIsVoid>Corrupts all Tri-Tip Daggers.</style>");
             }
             else
             {

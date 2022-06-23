@@ -24,14 +24,8 @@ namespace Hex3Reworks.Helpers
         {
             get
             {
-                if (enabled && EliteReworksPlugin.eliteVoidEnabled)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                if (enabled && EliteReworksPlugin.eliteVoidEnabled){ return true; }
+                else { return false; }
             }
         }
     }
