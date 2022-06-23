@@ -73,7 +73,7 @@ namespace Hex3Reworks
 
         public ConfigEntry<bool> OldGuillotine_Enable() { return Config.Bind<bool>(new ConfigDefinition("Uncommon - Old Guillotine", "Enable Changes"), true, new ConfigDescription("Enables changes to Old Guillotine.", null, Array.Empty<object>())); }
         public ConfigEntry<float> OldGuillotine_Chance() { return Config.Bind<float>(new ConfigDefinition("Uncommon - Old Guillotine", "Elite Gold Steal Chance"), 20f, new ConfigDescription("Chance to steal gold from elites.", null, Array.Empty<object>())); }
-        public ConfigEntry<float> OldGuillotine_BaseMoney() { return Config.Bind<float>(new ConfigDefinition("Uncommon - Old Guillotine", "Base Gold Reward"), 1f, new ConfigDescription("Base money earned each time you successfully steal (Scales with time).", null, Array.Empty<object>())); }
+        public ConfigEntry<float> OldGuillotine_BaseMoney() { return Config.Bind<float>(new ConfigDefinition("Uncommon - Old Guillotine", "Base Gold Reward"), 2f, new ConfigDescription("Base money earned each time you successfully steal (Scales with time).", null, Array.Empty<object>())); }
 
         // Legendary
         public ConfigEntry<bool> Clover_Enable() { return Config.Bind<bool>(new ConfigDefinition("Legendary - 57 Leaf Clover", "Enable Changes"), true, new ConfigDescription("Enables changes to 57 Leaf Clover.", null, Array.Empty<object>())); }
